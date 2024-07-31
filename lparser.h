@@ -67,19 +67,21 @@ typedef enum {
 
 typedef struct expdesc {
   expkind k;
-  union {
-    lua_Integer ival;    /* for VKINT */
-    lua_Number nval;  /* for VKFLT */
+  struct {
     TString *strval;  /* for VKSTR */
-    int info;  /* for generic use */
-    struct {  /* for indexed variables */
-      short idx;  /* index (R or "long" K) */
-      lu_byte t;  /* table (register or upvalue) */
-    } ind;
-    struct {  /* for local variables */
-      lu_byte ridx;  /* register holding the variable */
-      unsigned short vidx;  /* compiler index (in 'actvar.arr')  */
-    } var;
+    union {
+      lua_Integer ival;    /* for VKINT */
+      lua_Number nval;  /* for VKFLT */
+      int info;  /* for generic use */
+      struct {  /* for indexed variables */
+        short idx;  /* index (R or "long" K) */
+        lu_byte t;  /* table (register or upvalue) */
+      } ind;
+      struct {  /* for local variables */
+        lu_byte ridx;  /* register holding the variable */
+        unsigned short vidx;  /* compiler index (in 'actvar.arr')  */
+      } var;
+    };
   } u;
   int t;  /* patch list of 'exit when true' */
   int f;  /* patch list of 'exit when false' */

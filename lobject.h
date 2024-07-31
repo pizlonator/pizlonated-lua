@@ -166,7 +166,7 @@ typedef StackValue *StkId;
 ** When reallocating the stack, change all pointers to the stack into
 ** proper offsets.
 */
-typedef union {
+typedef struct {
   StkId p;  /* actual pointer */
   ptrdiff_t offset;  /* used while the stack is being reallocated */
 } StkIdRel;
@@ -630,11 +630,11 @@ typedef struct Proto {
 */
 typedef struct UpVal {
   CommonHeader;
-  union {
+  struct {
     TValue *p;  /* points to stack or to its own value */
     ptrdiff_t offset;  /* used while the stack is being reallocated */
   } v;
-  union {
+  struct {
     struct {  /* (when open) */
       struct UpVal *next;  /* linked list */
       struct UpVal **previous;
