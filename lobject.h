@@ -46,14 +46,18 @@
 /*
 ** Union of all Lua values
 */
-typedef union Value {
-  struct GCObject *gc;    /* collectable objects */
-  void *p;         /* light userdata */
-  lua_CFunction f; /* light C functions */
-  lua_Integer i;   /* integer numbers */
-  lua_Number n;    /* float numbers */
-  /* not used, but may avoid warnings for uninitialized value */
-  lu_byte ub;
+typedef struct Value {
+  union {
+    struct GCObject *gc;    /* collectable objects */
+    void *p;         /* light userdata */
+    lua_CFunction f; /* light C functions */
+  };
+  union {
+    lua_Integer i;   /* integer numbers */
+    lua_Number n;    /* float numbers */
+    /* not used, but may avoid warnings for uninitialized value */
+    lu_byte ub;
+  };
 } Value;
 
 
@@ -218,7 +222,7 @@ typedef union {
 
 
 /* macro defining a value corresponding to an absent key */
-#define ABSTKEYCONSTANT		{NULL}, LUA_VABSTKEY
+#define ABSTKEYCONSTANT		{{NULL}, {0}}, LUA_VABSTKEY
 
 
 /* mark an entry as empty */

@@ -91,8 +91,8 @@
 #define dummynode		(&dummynode_)
 
 static const Node dummynode_ = {
-  {{NULL}, LUA_VEMPTY,  /* value's value and type */
-   LUA_VNIL, 0, {NULL}}  /* key type, next, and key value */
+  {{{NULL}, {0}}, LUA_VEMPTY,  /* value's value and type */
+   LUA_VNIL, 0, {{NULL}, {0}}}  /* key type, next, and key value */
 };
 
 
