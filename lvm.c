@@ -36,7 +36,7 @@
 ** and compatible compilers.
 */
 #if !defined(LUA_USE_JUMPTABLE)
-#if defined(__GNUC__)
+#if defined(__GNUC__) && !defined(__PIZLONATOR_WAS_HERE__)
 #define LUA_USE_JUMPTABLE	1
 #else
 #define LUA_USE_JUMPTABLE	0
