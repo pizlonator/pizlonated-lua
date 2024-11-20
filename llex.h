@@ -46,11 +46,9 @@ enum RESERVED {
 #define NUM_RESERVED	(cast_int(TK_WHILE-FIRST_RESERVED + 1))
 
 
-typedef struct {
-  union {
-    lua_Number r;
-    lua_Integer i;
-  };
+typedef union {
+  lua_Number r;
+  lua_Integer i;
   TString *ts;
 } SemInfo;  /* semantics information */
 

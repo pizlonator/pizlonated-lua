@@ -46,18 +46,14 @@
 /*
 ** Union of all Lua values
 */
-typedef struct Value {
-  union {
-    struct GCObject *gc;    /* collectable objects */
-    void *p;         /* light userdata */
-    lua_CFunction f; /* light C functions */
-  };
-  union {
-    lua_Integer i;   /* integer numbers */
-    lua_Number n;    /* float numbers */
-    /* not used, but may avoid warnings for uninitialized value */
-    lu_byte ub;
-  };
+typedef union Value {
+  struct GCObject *gc;    /* collectable objects */
+  void *p;         /* light userdata */
+  lua_CFunction f; /* light C functions */
+  lua_Integer i;   /* integer numbers */
+  lua_Number n;    /* float numbers */
+  /* not used, but may avoid warnings for uninitialized value */
+  lu_byte ub;
 } Value;
 
 
@@ -166,7 +162,7 @@ typedef StackValue *StkId;
 ** When reallocating the stack, change all pointers to the stack into
 ** proper offsets.
 */
-typedef struct {
+typedef union {
   StkId p;  /* actual pointer */
   ptrdiff_t offset;  /* used while the stack is being reallocated */
 } StkIdRel;
@@ -222,7 +218,7 @@ typedef struct {
 
 
 /* macro defining a value corresponding to an absent key */
-#define ABSTKEYCONSTANT		{{NULL}, {0}}, LUA_VABSTKEY
+#define ABSTKEYCONSTANT		{NULL}, LUA_VABSTKEY
 
 
 /* mark an entry as empty */
@@ -630,11 +626,11 @@ typedef struct Proto {
 */
 typedef struct UpVal {
   CommonHeader;
-  struct {
+  union {
     TValue *p;  /* points to stack or to its own value */
     ptrdiff_t offset;  /* used while the stack is being reallocated */
   } v;
-  struct {
+  union {
     struct {  /* (when open) */
       struct UpVal *next;  /* linked list */
       struct UpVal **previous;
